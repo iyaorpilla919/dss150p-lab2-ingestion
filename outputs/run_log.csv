@@ -1,0 +1,4 @@
+run_id,source,start_time,end_time,status,records_read,records_written,duplicates_removed,watermark_before,watermark_after,error_message
+3b75ee9c-792b-4a89-a492-0bdc3e32fa38,file_sources,2026-09-12T11:54:18.171763+00:00,2026-09-12T11:54:18.182052+00:00,success,3,3,0,,,
+c44d6810-b070-4391-8425-049b8dd31c38,file_sources,2026-09-12T11:54:18.288082+00:00,2026-09-12T11:54:18.307228+00:00,success,3,0,0,,,
+b3adbf53-b787-4859-98e5-1017d7c4a701,rest_api_events,2026-09-12T12:01:40.817003+00:00,2026-09-12T12:01:40.882944+00:00,success,122,120,2,,2026-08-21T10:00:00,
