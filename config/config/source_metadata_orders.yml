@@ -1,0 +1,33 @@
+source_name: "orders_json"
+source_type: "JSON file"
+location_or_endpoint: "data/orders.json"
+owner: "TBD - data owner placeholder"
+description: "Order events with nested shipping details"
+record_count: 250
+schema:
+  - name: order_id
+    type: string
+  - name: customer_id
+    type: string
+  - name: order_timestamp
+    type: string
+  - name: status
+    type: string
+  - name: item_count
+    type: integer
+  - name: subtotal
+    type: number
+  - name: shipping_fee
+    type: number
+  - name: total_amount
+    type: number
+  - name: shipping
+    type: object (nested: region, method)
+primary_or_candidate_key: "order_id"
+update_pattern: "Full snapshot, ad hoc refresh"
+known_quality_issues:
+  - "Nested shipping object requires flattening for tabular use"
+acquisition_method: "File copy"
+validation_checks:
+  - "order_id not null"
+  - "total_amount equals subtotal plus shipping_fee"

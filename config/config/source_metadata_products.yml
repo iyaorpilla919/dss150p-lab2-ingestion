@@ -1,0 +1,29 @@
+source_name: "products_parquet"
+source_type: "Parquet file"
+location_or_endpoint: "data/products.parquet"
+owner: "TBD - data owner placeholder"
+description: "Product catalog with categorical and numeric attributes"
+record_count: 200
+schema:
+  - name: product_id
+    type: string
+  - name: product_name
+    type: string
+  - name: category
+    type: string
+  - name: brand
+    type: string
+  - name: unit_price
+    type: float
+  - name: stock_quantity
+    type: integer
+  - name: weight_kg
+    type: float
+primary_or_candidate_key: "product_id"
+update_pattern: "Full snapshot, ad hoc refresh"
+known_quality_issues:
+  - "None material observed; no nulls detected"
+acquisition_method: "File copy"
+validation_checks:
+  - "product_id not null and unique"
+  - "unit_price non-negative"

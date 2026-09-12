@@ -1,0 +1,31 @@
+source_name: "support_tickets_postgres"
+source_type: "PostgreSQL table"
+location_or_endpoint: "postgres://dss150p@localhost:5432/dss150p/support_tickets"
+owner: "TBD - data owner placeholder"
+description: "Support ticket records"
+record_count: 250
+schema:
+  - name: ticket_id
+    type: integer
+  - name: customer_id
+    type: string
+  - name: category
+    type: string
+  - name: priority
+    type: string
+  - name: assigned_agent
+    type: string
+  - name: opened_at
+    type: timestamp
+  - name: resolved_at
+    type: timestamp
+  - name: status
+    type: string
+primary_or_candidate_key: "ticket_id"
+update_pattern: "Row-level updates; CDC/timestamp strategy TBD"
+known_quality_issues:
+  - "4 rows with null assigned_agent"
+acquisition_method: "Inspection only in this lab (bounded SELECT queries)"
+validation_checks:
+  - "ticket_id not null and unique"
+  - "opened_at not null"

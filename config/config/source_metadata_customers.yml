@@ -1,0 +1,33 @@
+source_name: "customers_csv"
+source_type: "CSV file"
+location_or_endpoint: "data/customers.csv"
+owner: "TBD - data owner placeholder"
+description: "Customer master records"
+record_count: 250
+schema:
+  - name: customer_id
+    type: string
+  - name: first_name
+    type: string
+  - name: last_name
+    type: string
+  - name: email
+    type: string
+  - name: city
+    type: string
+  - name: signup_date
+    type: string
+  - name: customer_segment
+    type: string
+primary_or_candidate_key: "customer_id"
+update_pattern: "Full snapshot, ad hoc refresh"
+known_quality_issues:
+  - "3 duplicate customer_id keys"
+  - "4 exact duplicate rows"
+  - "3 missing values in email"
+  - "2 missing values in city"
+acquisition_method: "File copy"
+validation_checks:
+  - "customer_id not null and unique"
+  - "valid email format"
+  - "no future signup_date"
