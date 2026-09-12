@@ -1,18 +1,42 @@
 dataset: customers
-owner: "TODO"
+owner: "TBD - data owner placeholder"
+consumer: "Data engineering / analytics team"
 source_type: csv
 primary_key: customer_id
 delivery:
-  cadence: "TODO"
+  cadence: "Ad hoc / on-demand file drop"
 fields:
   - name: customer_id
     type: string
     nullable: false
     unique: true
+  - name: first_name
+    type: string
+    nullable: false
+  - name: last_name
+    type: string
+    nullable: false
   - name: email
     type: string
     nullable: true
+  - name: city
+    type: string
+    nullable: true
+  - name: signup_date
+    type: string
+    nullable: false
+  - name: customer_segment
+    type: string
+    nullable: false
 quality_rules:
-  - "TODO: define at least 5 rules"
+  - "customer_id must not be null"
+  - "customer_id must be unique"
+  - "email must match a valid email format when present"
+  - "signup_date must be a parseable date, not in the future"
+  - "no exact duplicate rows should exist in a single delivery"
 change_policy:
-  schema_change_notice: "TODO"
+  schema_change_notice: "Producer notifies consumer at least 5 business days before any field addition, removal, or type change"
+contact_escalation: "TBD - data owner email / on-call channel"
+ingestion_approach:
+  type: Full
+  justification: "No reliable update timestamp or CDC signal available on this source; full refresh avoids missed changes"
