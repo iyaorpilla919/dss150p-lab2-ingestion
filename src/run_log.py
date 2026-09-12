@@ -5,7 +5,7 @@ from pathlib import Path
 
 LOG_PATH = Path("outputs/run_log.csv")
 HEADER = [
-    "run_id", "source", "start_time", "end_time", "status",
+    "run_id", "started_at", "finished_at", "status", "source",
     "records_read", "records_written", "duplicates_removed",
     "watermark_before", "watermark_after", "error_message",
 ]
@@ -30,10 +30,10 @@ def append_run_log(
             writer.writeheader()
         writer.writerow({
             "run_id": str(uuid.uuid4()),
-            "source": source,
-            "start_time": start_time,
-            "end_time": datetime.now(timezone.utc).isoformat(),
+            "started_at": start_time,
+            "finished_at": datetime.now(timezone.utc).isoformat(),
             "status": status,
+            "source": source,
             "records_read": records_read,
             "records_written": records_written,
             "duplicates_removed": duplicates_removed,
