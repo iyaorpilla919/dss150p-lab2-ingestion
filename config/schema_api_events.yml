@@ -1,0 +1,27 @@
+dataset: api_events
+fields:
+  - name: event_id
+    logical_type: string
+    nullable: false
+    key_role: primary_key
+    definition: Unique identifier for an event (may repeat with updated payload)
+  - name: updated_at
+    logical_type: timestamp
+    nullable: false
+    key_role: watermark_field
+    definition: "Last-updated time for the event; arrives as JSON text, represents a timestamp logically"
+  - name: amount
+    logical_type: decimal
+    nullable: true
+    key_role: none
+    definition: Monetary amount associated with the event
+  - name: metadata
+    logical_type: struct
+    nullable: true
+    key_role: none
+    definition: Nested attributes describing event context
+  - name: _ingested_at
+    logical_type: timestamp
+    nullable: false
+    key_role: none
+    definition: UTC timestamp assigned at ingestion time (pipeline-generated, not source data)
