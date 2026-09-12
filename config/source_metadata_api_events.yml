@@ -1,0 +1,19 @@
+source_name: rest_api_events
+source_type: REST API
+location_or_endpoint: http://127.0.0.1:8000/api/events
+owner_contact: API Engineering Team (api-team@company.internal)
+description: Paginated JSON REST API delivering system event updates with incremental updated_at timestamps.
+record_count: 122 total events (120 unique logical events)
+schema_summary:
+  event_id: string
+  updated_at: string (ISO-8601 timestamp)
+  amount: float
+  metadata: object (JSON)
+candidate_key: event_id (with updated_at for versioning)
+update_pattern: Append and Update (repeats existing event_id with newer updated_at)
+known_quality_issues: Duplicate event_ids sent across paginated responses requiring max(updated_at) deduplication.
+acquisition_method: Incremental REST API GET requests using page pagination and updated_after timestamp watermark.
+validation_checks:
+  - event_id is non-null
+  - updated_at is valid ISO timestamp
+  - deduplicated record count matches unique event_ids
