@@ -1,0 +1,65 @@
+dataset: customers
+source: customers_csv
+fields:
+  - name: customer_id
+    source_representation: string (CSV text)
+    logical_type: string
+    nullable: false
+    key_role: primary_key
+    definition: >
+      Unique identifier for a customer record. Verified in profiling
+      (Task 1.2) to contain some duplicate values in the raw source;
+      logically expected to be unique per the data contract.
+
+  - name: first_name
+    source_representation: string (CSV text)
+    logical_type: string
+    nullable: true
+    key_role: none
+    definition: Customer's given/first name.
+
+  - name: last_name
+    source_representation: string (CSV text)
+    logical_type: string
+    nullable: true
+    key_role: none
+    definition: Customer's family/last name.
+
+  - name: email
+    source_representation: string (CSV text)
+    logical_type: string
+    nullable: true
+    key_role: none
+    definition: >
+      Customer contact email address. Profiling identified missing
+      values in this column; nullability reflects that observed reality.
+
+  - name: city
+    source_representation: string (CSV text)
+    logical_type: string
+    nullable: true
+    key_role: none
+    definition: >
+      Customer's city of residence. Profiling identified missing values
+      in this column.
+
+  - name: signup_date
+    source_representation: string (CSV text, e.g. "YYYY-MM-DD")
+    logical_type: date
+    nullable: true
+    key_role: none
+    definition: >
+      Date the customer registered. Arrives as plain text in the CSV
+      but logically represents a calendar date and should be parsed
+      accordingly by downstream consumers.
+
+  - name: customer_segment
+    source_representation: string (CSV text)
+    logical_type: string
+    nullable: true
+    key_role: none
+    definition: Business-assigned segment/category for the customer.
+
+known_deviations_from_source:
+  - "Raw source contains exact duplicate rows and duplicate customer_id values; the logical schema still declares customer_id as the primary key because that is the intended business key, not because the raw file currently satisfies it."
+  - "This schema describes the RAW/logical structure of the data as delivered. No cleaning, deduplication, or repair is implied or performed at this stage (see raw-area preservation rule in Section 6 of the lab)."

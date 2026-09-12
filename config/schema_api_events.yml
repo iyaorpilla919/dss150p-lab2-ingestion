@@ -1,0 +1,65 @@
+dataset: api_events
+source: rest_api_events
+fields:
+  - name: event_id
+    source_representation: string (JSON text)
+    logical_type: string
+    nullable: false
+    key_role: candidate_key
+    definition: >
+      Identifier for an event. NOT sufficient alone as a duplicate-
+      resolution key: the source deliberately repeats event_id values
+      across pages, each repeat carrying a newer updated_at. The
+      logical "current version" of a record is (event_id, latest
+      updated_at) together, not event_id alone.
+
+  - name: updated_at
+    source_representation: string (ISO-8601 text in JSON)
+    logical_type: timestamp
+    nullable: false
+    key_role: watermark_field
+    definition: >
+      Last-updated time for the event as reported by the source.
+      Arrives as JSON text but logically represents a timestamp.
+      Used both to resolve which duplicate event_id record is current
+      (greatest updated_at wins) and as the incremental watermark field
+      for the updated_after query parameter.
+
+  - name: amount
+    source_representation: number (JSON numeric)
+    logical_type: decimal
+    nullable: true
+    key_role: none
+    definition: Monetary amount associated with the event.
+
+  - name: metadata
+    source_representation: object (nested JSON)
+    logical_type: struct
+    nullable: true
+    key_role: none
+    definition: >
+      Nested attributes describing event context. Kept as a nested
+      struct in the raw area rather than flattened, per the
+      raw-preservation rule; flattening/parsing is a later lifecycle
+      concern.
+
+  - name: _ingested_at
+    source_representation: n/a (pipeline-generated)
+    logical_type: timestamp
+    nullable: false
+    key_role: none
+    definition: >
+      UTC timestamp assigned by the ingestion pipeline at the moment
+      the record was retrieved. This is ingestion time, not source
+      event time, and is not part of the original API payload.
+
+  - name: _source
+    source_representation: n/a (pipeline-generated)
+    logical_type: string
+    nullable: false
+    key_role: none
+    definition: Pipeline-assigned tag identifying which source produced the record.
+
+notes:
+  - "event_id alone is insufficient to decide which duplicate record to keep (see Reflection Q3): the source can emit the same event_id more than once with different updated_at values, so deduplication logic must compare updated_at across all records sharing an event_id and keep the greatest one."
+  - "updated_at is source/event time; _ingested_at is ingestion time. They answer different questions (when did the fact happen vs. when did we acquire it) and both are required to reason about latency and reprocessing."
